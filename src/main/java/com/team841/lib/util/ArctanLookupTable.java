@@ -2,45 +2,46 @@ package com.team841.lib.util;
 
 public class ArctanLookupTable {
 
-    // Method to get the arctan value from the lookup table based on the x/y ratio
-    public static double getArctanValueFromLookup(double ratio) {
-        // Convert the ratio (x/y) to an angle in degrees
-        double degrees = Math.toDegrees(Math.atan(ratio));
+  // Method to get the arctan value from the lookup table based on the x/y ratio
+  public static double getArctanValueFromLookup(double ratio) {
+    // Convert the ratio (x/y) to an angle in degrees
+    double degrees = Math.toDegrees(Math.atan(ratio));
 
-        // We assume degrees range from 0 to 90, and map them to the lookup table
-        int totalMinutes = (int) Math.round(degrees * 60); // Convert degrees to total minutes
-        int maxIndex = ARCTAN_TABLE.length - 1; // Maximum valid index in the lookup table
+    // We assume degrees range from 0 to 90, and map them to the lookup table
+    int totalMinutes = (int) Math.round(degrees * 60); // Convert degrees to total minutes
+    int maxIndex = ARCTAN_TABLE.length - 1; // Maximum valid index in the lookup table
 
-        // Clamp the index to the range of the lookup table
-        if (totalMinutes < 0) totalMinutes = 0;
-        if (totalMinutes > maxIndex) totalMinutes = maxIndex;
+    // Clamp the index to the range of the lookup table
+    if (totalMinutes < 0) totalMinutes = 0;
+    if (totalMinutes > maxIndex) totalMinutes = maxIndex;
 
-        // Return the precomputed arctan value from the lookup table
-        return ARCTAN_TABLE[totalMinutes];
+    // Return the precomputed arctan value from the lookup table
+    return ARCTAN_TABLE[totalMinutes];
+  }
+
+  // Method to calculate the arctan of x/y using the lookup table
+  public static double arctanFromLookup(double x, double y) {
+    if (y == 0) {
+      // Handle the case where y is 0 (undefined or infinite result)
+      return x > 0 ? 90.0 : -90.0; // arctan(∞) = 90 degrees, arctan(-∞) = -90 degrees
     }
 
-    // Method to calculate the arctan of x/y using the lookup table
-    public static double arctanFromLookup(double x, double y) {
-        if (y == 0) {
-            // Handle the case where y is 0 (undefined or infinite result)
-            return x > 0 ? 90.0 : -90.0; // arctan(∞) = 90 degrees, arctan(-∞) = -90 degrees
-        }
+    // Calculate the ratio x/y
+    double ratio = x / y;
 
-        // Calculate the ratio x/y
-        double ratio = x / y;
+    // Adjust the sign and use symmetry for negative ratios
+    boolean negative = ratio < 0;
+    ratio = Math.abs(ratio);
 
-        // Adjust the sign and use symmetry for negative ratios
-        boolean negative = ratio < 0;
-        ratio = Math.abs(ratio);
+    // Get the arctan value from the lookup table
+    double arctanValue = getArctanValueFromLookup(ratio);
 
-        // Get the arctan value from the lookup table
-        double arctanValue = getArctanValueFromLookup(ratio);
+    // Adjust the result for negative ratios
+    return negative ? -arctanValue : arctanValue;
+  }
 
-        // Adjust the result for negative ratios
-        return negative ? -arctanValue : arctanValue;
-    }
-
-    public static final double[] ARCTAN_TABLE = new double[] {
+  public static final double[] ARCTAN_TABLE =
+      new double[] {
         0.000000, // arctan(0.00)
         0.016667, // arctan(0.02)
         0.033333, // arctan(0.03)
@@ -5501,5 +5502,5 @@ public class ArctanLookupTable {
         -89.050000, // arctan(90.95)
         -89.033333, // arctan(90.97)
         -89.016667, // arctan(90.98)
-    };
+      };
 }
