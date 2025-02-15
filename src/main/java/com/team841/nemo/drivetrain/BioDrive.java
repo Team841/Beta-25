@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package com.team841.nemo.drivetrain;
 
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -8,8 +8,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.LimelightHelpers;
-import frc.robot.generated.TunerConstants;
+import com.team841.nemo.vision.LimelightHelpers;
+import com.team841.nemo.constants.TunerConstants;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -18,7 +18,7 @@ import static edu.wpi.first.units.Units.*;
 
 public class BioDrive extends Command {
 
-	public BioDrive(CommandSwerveDrivetrain drivetrain, DoubleSupplier velocityXGetter, DoubleSupplier velocityYGetter, DoubleSupplier velocityOmegaGetter, BooleanSupplier snapGetter){
+	public BioDrive(Drivetrain drivetrain, DoubleSupplier velocityXGetter, DoubleSupplier velocityYGetter, DoubleSupplier velocityOmegaGetter, BooleanSupplier snapGetter){
 		this.drivetrain = drivetrain;
 		this.mVelocityX = velocityXGetter;
 		this.mVelocityY = velocityYGetter;
@@ -42,7 +42,7 @@ public class BioDrive extends Command {
 	private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 	private final SwerveRequest.ApplyRobotSpeeds robotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
-	private CommandSwerveDrivetrain drivetrain;
+	private Drivetrain drivetrain;
 
 	private DoubleSupplier mVelocityX, mVelocityY, mVelocityOmega;
 	private BooleanSupplier snapGetter;

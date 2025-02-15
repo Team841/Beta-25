@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package com.team841.nemo.drivetrain;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -28,14 +28,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
-import frc.robot.LimelightHelpers;
-import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+import com.team841.nemo.vision.LimelightHelpers;
+import com.team841.nemo.constants.TunerConstants.TunerSwerveDrivetrain;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
  * Subsystem so it can easily be used in command-based projects.
  */
-public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Subsystem {
+public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
 
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable networkTablePoses = inst.getTable("Drivetrain Poses");
@@ -134,7 +134,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * @param drivetrainConstants   Drivetrain-wide constants for the swerve drive
      * @param modules               Constants for each specific module
      */
-    public CommandSwerveDrivetrain(
+    public Drivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         SwerveModuleConstants<?, ?, ?>... modules
     ) {
@@ -157,7 +157,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      *                                CAN FD, and 100 Hz on CAN 2.0.
      * @param modules                 Constants for each specific module
      */
-    public CommandSwerveDrivetrain(
+    public Drivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         double odometryUpdateFrequency,
         SwerveModuleConstants<?, ?, ?>... modules
@@ -187,7 +187,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      *                                  and radians
      * @param modules                   Constants for each specific module
      */
-    public CommandSwerveDrivetrain(
+    public Drivetrain(
         SwerveDrivetrainConstants drivetrainConstants,
         double odometryUpdateFrequency,
         Matrix<N3, N1> odometryStandardDeviation,

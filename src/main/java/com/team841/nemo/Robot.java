@@ -2,11 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package com.team841.nemo;
 
+import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import sun.misc.Signal;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -15,6 +17,28 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    SignalLogger.setPath("/media/sda1/");
+    SignalLogger.start();
+
+    SignalLogger.writeString("MetaData/ProjectName", "Nemo");
+    SignalLogger.writeString("MetaData/MavenName", BuildConstants.MAVEN_NAME);
+    SignalLogger.writeString("MetaData/BuildDate", BuildConstants.BUILD_DATE);
+    SignalLogger.writeString("MetaData/GitSHA", BuildConstants.GIT_SHA);
+    SignalLogger.writeString("MetaData/GitDate", BuildConstants.GIT_DATE);
+    SignalLogger.writeString("MetaData/GitBranch", BuildConstants.GIT_BRANCH);
+
+
+    switch (BuildConstants.DIRTY) {
+      case 0:
+        SignalLogger.writeString("MetaData/GitDirty", "All changes committed");
+        break;
+      case 1:
+        SignalLogger.writeString("MetaData/GitDirty", "Uncomitted changes");
+        break;
+      default:
+        SignalLogger.writeString("MetaData/GitDirty", "Unknown");
+        break;
+    }
   }
 
   @Override

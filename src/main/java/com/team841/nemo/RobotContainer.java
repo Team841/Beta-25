@@ -2,22 +2,17 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package com.team841.nemo;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
-import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.BioDrive;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
+import com.team841.nemo.constants.TunerConstants;
+import com.team841.nemo.drivetrain.BioDrive;
+import com.team841.nemo.drivetrain.Drivetrain;
 
 public class RobotContainer {
 
@@ -29,7 +24,7 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Drivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public RobotContainer() {
         this.drive = new BioDrive(
