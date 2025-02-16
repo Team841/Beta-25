@@ -12,7 +12,7 @@ public class Snapping extends Command {
   public Snapping(Drivetrain drivetrain, boolean goLeft) {
     this.drivetrain = drivetrain;
 
-    this.setpoint = !goLeft ? -14.78 : 14.35;
+    this.setpoint = !goLeft ? -14.93 : 16.1;
 
     addRequirements(this.drivetrain);
     setName("Snapping");

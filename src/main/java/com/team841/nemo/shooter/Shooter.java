@@ -6,6 +6,7 @@ import com.team841.nemo.constants.SC;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -43,9 +44,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command shoot() {
-    return new InstantCommand(() -> intakeMotor.set(0.75), this)
+    return new RunCommand(() -> intakeMotor.set(-0.5), this)
         .withName("Shoot")
-        .withTimeout(0.3)
+        .withTimeout(1)
         .finallyDo(() -> intakeMotor.stopMotor());
   }
 

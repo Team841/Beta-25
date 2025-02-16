@@ -82,42 +82,42 @@ public class RobotContainer {
         .and(joystick.leftTrigger())
         .whileTrue(
             new SequentialCommandGroup(
-                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L3), new Shooter().shoot()));
+                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L3), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
 
     joystick
         .leftBumper()
         .and(joystick.rightTrigger())
         .whileTrue(
             new SequentialCommandGroup(
-                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L4), new Shooter().shoot()));
+                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L4), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
 
     joystick
         .rightBumper()
         .and(joystick.leftTrigger())
         .whileTrue(
             new SequentialCommandGroup(
-                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L3), new Shooter().shoot()));
+                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L3), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
 
     joystick
         .rightBumper()
         .and(joystick.rightTrigger())
         .whileTrue(
             new SequentialCommandGroup(
-                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L4), new Shooter().shoot()));
+                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L4), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
 
     joystick
         .leftBumper()
         .and(joystick.y())
         .whileTrue(
             new SequentialCommandGroup(
-                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L2), new Shooter().shoot()));
+                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L2), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
 
     joystick
         .rightBumper()
         .and(joystick.y())
         .whileTrue(
             new SequentialCommandGroup(
-                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L2), new Shooter().shoot()));
+                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L2), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
 
     joystick
         .leftBumper()
@@ -125,6 +125,12 @@ public class RobotContainer {
     joystick
         .rightBumper()
         .onFalse(new InstantCommand((() -> this.escalator.setPosition(Escalator.Position.Home))));
+
+    joystick.b().and(joystick.leftTrigger()).whileTrue(new SequentialCommandGroup(new Move(escalator, Escalator.Position.L3), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
+    joystick.b().and(joystick.rightTrigger()).whileTrue(new SequentialCommandGroup(new Move(escalator, Escalator.Position.L4), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
+    joystick.b().and(joystick.y()).whileTrue(new SequentialCommandGroup(new Move(escalator, Escalator.Position.L2), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
+
+    joystick.b().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
 
     // l3: left trigger
     // l4: right trigger

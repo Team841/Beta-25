@@ -3,6 +3,7 @@ package com.team841.nemo.constants;
 import com.ctre.phoenix6.configs.*;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 
 public class SC {
@@ -27,7 +28,7 @@ public class SC {
         new Slot0Configs()
             .withKP(75)
             .withKD(1.8)
-            .withKS(0.387)
+            .withKS(5.21)
             .withKV(5)
             .withKA(0.387)
             .withKG(8.79)
@@ -49,6 +50,7 @@ public class SC {
                 new MotionMagicConfigs()
                     .withMotionMagicAcceleration(145)
                     .withMotionMagicCruiseVelocity(160)
-                    .withMotionMagicJerk(130));
+                    .withMotionMagicJerk(130))
+                .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
   }
 }

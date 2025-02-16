@@ -45,7 +45,7 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
   StructPublisher<Pose2d> limelightPublisher = limelightTopic.publish();
   StructPublisher<Pose2d> ctrePublisher = ctreTopic.publish();
 
-  public PIDController controller = new PIDController(0.5, 0, 0.5 / 4);
+  public PIDController controller = new PIDController(0.5, 0, 0);
   public final SwerveRequest.ApplyRobotSpeeds robotSpeeds = new SwerveRequest.ApplyRobotSpeeds();
 
   private static final double kSimLoopPeriod = 0.005; // 5 ms
@@ -198,7 +198,7 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
   /**
    * Returns a command that applies the specified control request to this swerve drivetrain.
    *
-   * @param request Function returning the request to apply
+   * @param requestSupplier Function returning the request to apply
    * @return Command to run
    */
   public Command applyRequest(Supplier<SwerveRequest> requestSupplier) {

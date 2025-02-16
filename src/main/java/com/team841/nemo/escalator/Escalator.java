@@ -36,10 +36,11 @@ public class Escalator extends SubsystemBase {
     Log();
     SmartDashboard.putNumber("Motor Pos", rightMotor.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("setpoint", control.Position);
+    SmartDashboard.putNumber("canrange", this.CANRange.getDistance().getValueAsDouble());
 
-    if (this.CANRange.getDistance().getValueAsDouble() < 0.11) {
-      this.rightMotor.setPosition(0);
-    }
+//    if (this.CANRange.getDistance().getValueAsDouble() < 0.11) {
+//      this.rightMotor.setPosition(0);
+//    }
   }
 
   public void setPosition(double Position) {
@@ -69,11 +70,11 @@ public class Escalator extends SubsystemBase {
 
   public enum Position {
     Intake(0.0),
-    L1(15.7),
+    L1(15.25),
     L2(23.57),
     L3(36.02),
-    L4(58.16),
-    Home(0.0);
+    L4(57.95),
+    Home(2.0);
 
     private final double position;
 
