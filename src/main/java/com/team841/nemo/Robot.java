@@ -9,7 +9,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.util.List;
+
 public class Robot extends TimedRobot {
+  private final GcStatsCollector gcStatsCollector = new GcStatsCollector();
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
@@ -42,6 +47,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    gcStatsCollector.update();
   }
 
   @Override
@@ -94,4 +100,28 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationPeriodic() {}
+
+  // Copied From AK
+  private static final class GcStatsCollector {
+    private List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
+    private final long[] lastTimes = new long[gcBeans.size()];
+    private final long[] lastCounts = new long[gcBeans.size()];
+
+    public void update() {
+      long accumTime = 0;
+      long accumCounts = 0;
+      for (int i = 0; i < gcBeans.size(); i++) {
+        long gcTime = gcBeans.get(i).getCollectionTime();
+        long gcCount = gcBeans.get(i).getCollectionCount();
+        accumTime += gcTime - lastTimes[i];
+        accumCounts += gcCount - lastCounts[i];
+
+        lastTimes[i] = gcTime;
+        lastCounts[i] = gcCount;
+      }
+
+      SignalLogger.writeDouble("RobotLogging/GCTimeMS", (double) accumTime);
+      SignalLogger.writeDouble("RobotLogging/GCCounts", (double) accumCounts);
+    }
+  }
 }

@@ -37,13 +37,12 @@ public class RobotContainer {
   private final CommandXboxController joystick = new CommandXboxController(0);
 
   public final Drivetrain drivetrain = TunerConstants.createDrivetrain();
-  private final Snapping snapping;
   public final Escalator escalator = new Escalator();
   public final Shooter shooter = new Shooter();
+  public final Control control;
 
   public RobotContainer() {
-
-    snapping = new Snapping(drivetrain, true);
+    control = new Control(drivetrain, escalator, shooter);
     configureBindings();
   }
 
@@ -77,58 +76,19 @@ public class RobotContainer {
     // reset the field-centric heading on left bumper press
     joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-    joystick
-        .leftBumper()
-        .and(joystick.leftTrigger())
-        .whileTrue(
-            new SequentialCommandGroup(
-                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L3), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
+    joystick.leftBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreLeftL3);
+    joystick.leftBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreLeftL4);
+    joystick.rightBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreRightL3);
+    joystick.rightBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreRightL4);
+    joystick.leftBumper().and(joystick.y()).whileTrue(control.snapScoreLeftL2);
+    joystick.rightBumper().and(joystick.y()).whileTrue(control.snapScoreRightL2);
 
-    joystick
-        .leftBumper()
-        .and(joystick.rightTrigger())
-        .whileTrue(
-            new SequentialCommandGroup(
-                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L4), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
+    joystick.leftBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+    joystick.rightBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
 
-    joystick
-        .rightBumper()
-        .and(joystick.leftTrigger())
-        .whileTrue(
-            new SequentialCommandGroup(
-                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L3), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
-
-    joystick
-        .rightBumper()
-        .and(joystick.rightTrigger())
-        .whileTrue(
-            new SequentialCommandGroup(
-                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L4), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
-
-    joystick
-        .leftBumper()
-        .and(joystick.y())
-        .whileTrue(
-            new SequentialCommandGroup(
-                new Snapping(drivetrain, true), new Move(escalator, Escalator.Position.L2), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
-
-    joystick
-        .rightBumper()
-        .and(joystick.y())
-        .whileTrue(
-            new SequentialCommandGroup(
-                new Snapping(drivetrain, false), new Move(escalator, Escalator.Position.L2), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
-
-    joystick
-        .leftBumper()
-        .onFalse(new InstantCommand((() -> this.escalator.setPosition(Escalator.Position.Home))));
-    joystick
-        .rightBumper()
-        .onFalse(new InstantCommand((() -> this.escalator.setPosition(Escalator.Position.Home))));
-
-    joystick.b().and(joystick.leftTrigger()).whileTrue(new SequentialCommandGroup(new Move(escalator, Escalator.Position.L3), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
-    joystick.b().and(joystick.rightTrigger()).whileTrue(new SequentialCommandGroup(new Move(escalator, Escalator.Position.L4), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
-    joystick.b().and(joystick.y()).whileTrue(new SequentialCommandGroup(new Move(escalator, Escalator.Position.L2), new Shooter().shoot(), new Move(escalator, Escalator.Position.Home)));
+    joystick.b().and(joystick.leftTrigger()).whileTrue(control.noSnapAutoScoreL3);
+    joystick.b().and(joystick.rightTrigger()).whileTrue(control.noSnapAutoScoreL4);
+    joystick.b().and(joystick.y()).whileTrue(control.noSnapAutoScoreL2);
 
     joystick.b().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
 
