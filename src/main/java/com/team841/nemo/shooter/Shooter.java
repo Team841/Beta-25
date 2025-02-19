@@ -1,6 +1,7 @@
 package com.team841.nemo.shooter;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team841.nemo.constants.SC;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,11 +12,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
-  private final TalonFX intakeMotor = new TalonFX(SC.Shooter.intakeMotorID, "rio");
+  public final TalonFX intakeMotor = new TalonFX(SC.Shooter.intakeMotorID, "rio");
 
   public Shooter() {
     intakeMotor.getConfigurator().refresh(SC.Shooter.currentLimits);
     intakeMotor.getConfigurator().apply(SC.Shooter.currentLimits);
+    intakeMotor.getConfigurator().apply(new AudioConfigs().withAllowMusicDurDisable(true));
   }
 
   /**

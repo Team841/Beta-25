@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Escalator extends SubsystemBase {
-  private final TalonFX leftMotor = new TalonFX(SC.Escalator.left, RC.kCANBus);
-  private final TalonFX rightMotor = new TalonFX(SC.Escalator.right, RC.kCANBus);
+  public final TalonFX leftMotor = new TalonFX(SC.Escalator.left, RC.kCANBus);
+  public final TalonFX rightMotor = new TalonFX(SC.Escalator.right, RC.kCANBus);
   private final CANrange CANRange = new CANrange(SC.Escalator.CANRange);
 
   private final MotionMagicTorqueCurrentFOC control;

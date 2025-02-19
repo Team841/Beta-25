@@ -6,6 +6,7 @@ package com.team841.nemo;
 
 import static edu.wpi.first.units.Units.*;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.team841.nemo.constants.TunerConstants;
@@ -14,6 +15,7 @@ import com.team841.nemo.drivetrain.Snapping;
 import com.team841.nemo.escalator.Escalator;
 import com.team841.nemo.escalator.Move;
 import com.team841.nemo.shooter.Shooter;
+import com.team841.nemo.hang.Hang;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -40,10 +42,21 @@ public class RobotContainer {
   public final Escalator escalator = new Escalator();
   public final Shooter shooter = new Shooter();
   public final Control control;
+  public final Hang hang = new Hang();
+  public final Orchestra orchestra = new Orchestra();
 
   public RobotContainer() {
     control = new Control(drivetrain, escalator, shooter);
     configureBindings();
+
+    orchestra.addInstrument(this.escalator.leftMotor);
+    orchestra.addInstrument(this.escalator.rightMotor);
+    orchestra.addInstrument(this.shooter.intakeMotor);
+    orchestra.addInstrument(this.hang.leftMotor);
+    orchestra.addInstrument(this.hang.rightMotor);
+
+    orchestra.loadMusic("output.chrp");
+    orchestra.play();
   }
 
   private void configureBindings() {
@@ -91,6 +104,11 @@ public class RobotContainer {
     joystick.b().and(joystick.y()).whileTrue(control.noSnapAutoScoreL2);
 
     joystick.b().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+
+    joystick.a().whileTrue(new InstantCommand(() -> this.hang.setDutyCyle(0.12)));
+    joystick.x().whileTrue(new InstantCommand(() -> this.hang.setDutyCyle(-0.035)));
+    joystick.a().onFalse(new InstantCommand(() -> this.hang.stop()));
+    joystick.x().onFalse(new InstantCommand(() -> this.hang.stop()));
 
     // l3: left trigger
     // l4: right trigger
