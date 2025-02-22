@@ -5,9 +5,7 @@ import com.team841.nemo.drivetrain.Snapping;
 import com.team841.nemo.escalator.Escalator;
 import com.team841.nemo.escalator.Move;
 import com.team841.nemo.shooter.Shooter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 
 public class Control {
 
@@ -27,6 +25,8 @@ public class Control {
     public final SequentialCommandGroup noSnapAutoScoreL3;
     public final SequentialCommandGroup noSnapAutoScoreL2;
 
+    public final Command intake;
+
     public Control(Drivetrain drivetrain, Escalator escalator, Shooter shooter){
         this.drivetrain = drivetrain;
         this.escalator = escalator;
@@ -43,5 +43,21 @@ public class Control {
         this.noSnapAutoScoreL4 = new SequentialCommandGroup(new Move(escalator, Escalator.Position.L4), new Shooter().shoot(), new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
         this.noSnapAutoScoreL3 = new SequentialCommandGroup(new Move(escalator, Escalator.Position.L3), new Shooter().shoot(), new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
         this.noSnapAutoScoreL2 = new SequentialCommandGroup(new Move(escalator, Escalator.Position.L2), new Shooter().shoot(), new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+
+        this.intake = Intake();
+    }
+
+    public Command Intake(){
+        return new ParallelCommandGroup(
+            new RunCommand(() -> escalator.setPosition(Escalator.Position.Intake), escalator),
+            new InstantCommand(shooter::Intake, shooter)
+        ).onlyWhile(
+                () -> !shooter.in()
+        ).finallyDo(
+                interrupted -> {
+                    shooter.stop();
+                    escalator.setPosition(Escalator.Position.Home);
+                }
+        );
     }
 }

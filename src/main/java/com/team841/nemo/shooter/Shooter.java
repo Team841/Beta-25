@@ -1,6 +1,7 @@
 package com.team841.nemo.shooter;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team841.nemo.constants.SC;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private final TalonFX intakeMotor = new TalonFX(SC.Shooter.intakeMotorID, "rio");
+  private final CANrange frontRange = new CANrange(SC.Shooter.CANRangeFrontID);
+  private final CANrange backRange = new CANrange(SC.Shooter.CANRangeBackID);
 
   public Shooter() {
     intakeMotor.getConfigurator().refresh(SC.Shooter.currentLimits);
@@ -27,12 +30,32 @@ public class Shooter extends SubsystemBase {
     intakeMotor.set(setpoint);
   }
 
+  public boolean clear(){
+    return backRange.getDistance().getValueAsDouble() > 0.1;
+  }
+
+  public boolean in(){
+    return backRange.getDistance().getValueAsDouble() > 0.1 && frontRange.getDistance().getValueAsDouble() < 0.1;
+  }
+
+  public boolean past(){
+    return backRange.getDistance().getValueAsDouble() < 0.1;
+  }
+
   public void slowShooter() {
     intakeMotor.set(0.075);
   }
 
   public void pullIntake() {
     intakeMotor.set(0.3);
+  }
+
+  public void Intake() {
+    intakeMotor.set(-0.1);
+  }
+
+  public void revIntake(){
+    intakeMotor.set(0.1);
   }
 
   public void stop() {
@@ -46,7 +69,7 @@ public class Shooter extends SubsystemBase {
   public Command shoot() {
     return new RunCommand(() -> intakeMotor.set(-0.5), this)
         .withName("Shoot")
-        .withTimeout(1)
+        .withTimeout(0.3)
         .finallyDo(() -> intakeMotor.stopMotor());
   }
 

@@ -49,7 +49,7 @@ public class SC {
             .withMotionMagic(
                 new MotionMagicConfigs()
                     .withMotionMagicAcceleration(145)
-                    .withMotionMagicCruiseVelocity(160)
+                    .withMotionMagicCruiseVelocity(160*2)
                     .withMotionMagicJerk(130))
                 .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake));
   }

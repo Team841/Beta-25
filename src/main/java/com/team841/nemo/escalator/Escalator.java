@@ -69,7 +69,7 @@ public class Escalator extends SubsystemBase {
   }
 
   public enum Position {
-    Intake(0.0),
+    Intake(5.9),
     L1(15.25),
     L2(23.57),
     L3(36.02),

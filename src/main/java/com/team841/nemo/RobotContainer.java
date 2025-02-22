@@ -34,7 +34,8 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  private final CommandXboxController joystick = new CommandXboxController(0);
+  private final CommandXboxController joystick = new CommandXboxController(1);
+  private final CommandXboxController joystick2 = new CommandXboxController(0);
 
   public final Drivetrain drivetrain = TunerConstants.createDrivetrain();
   public final Escalator escalator = new Escalator();
@@ -54,11 +55,11 @@ public class RobotContainer {
             () ->
                 drive
                     .withVelocityX(
-                        joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                        joystick2.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(
-                        joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                        joystick2.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(
-                        -joystick.getRightX()
+                        -joystick2.getRightX()
                             * MaxAngularRate) // Drive counterclockwise with negative X (left)
             ));
 
@@ -74,21 +75,26 @@ public class RobotContainer {
     // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // reset the field-centric heading on left bumper press
-    joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    joystick2.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-    joystick.leftBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreLeftL3);
-    joystick.leftBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreLeftL4);
-    joystick.rightBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreRightL3);
-    joystick.rightBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreRightL4);
-    joystick.leftBumper().and(joystick.y()).whileTrue(control.snapScoreLeftL2);
-    joystick.rightBumper().and(joystick.y()).whileTrue(control.snapScoreRightL2);
+//    joystick.leftBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreLeftL3);
+//    joystick.leftBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreLeftL4);
+//    joystick.rightBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreRightL3);
+//    joystick.rightBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreRightL4);
+//    joystick.leftBumper().and(joystick.y()).whileTrue(control.snapScoreLeftL2);
+//    joystick.rightBumper().and(joystick.y()).whileTrue(control.snapScoreRightL2);
 
-    joystick.leftBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
-    joystick.rightBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+//    joystick.leftBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+//    joystick.rightBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+
+    joystick.a().whileTrue(control.intake);
+    joystick.x().whileTrue(new InstantCommand(shooter::revIntake)).onFalse(new InstantCommand(shooter::stop));
 
     joystick.b().and(joystick.leftTrigger()).whileTrue(control.noSnapAutoScoreL3);
     joystick.b().and(joystick.rightTrigger()).whileTrue(control.noSnapAutoScoreL4);
     joystick.b().and(joystick.y()).whileTrue(control.noSnapAutoScoreL2);
+    joystick.povUp().onTrue(new InstantCommand(escalator::goUp)).onFalse(new InstantCommand(escalator::stop));
+    joystick.povDown().onTrue(new InstantCommand(escalator::goDown)).onFalse(new InstantCommand(escalator::stop));
 
     joystick.b().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
 
