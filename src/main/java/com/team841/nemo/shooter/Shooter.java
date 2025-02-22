@@ -19,6 +19,7 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     intakeMotor.getConfigurator().refresh(SC.Shooter.currentLimits);
     intakeMotor.getConfigurator().apply(SC.Shooter.currentLimits);
+    intakeMotor.getConfigurator().apply(new AudioConfigs().withAllowMusicDurDisable(true));
   }
 
   /**

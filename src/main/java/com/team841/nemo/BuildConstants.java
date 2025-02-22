@@ -5,7 +5,7 @@ package com.team841.nemo;
  */
 public final class BuildConstants {
   public static final String MAVEN_GROUP = "";
-  public static final String MAVEN_NAME = "Beta-25";
+  public static final String MAVEN_NAME = "beta";
   public static final String VERSION = "unspecified";
   public static final int GIT_REVISION = 9;
   public static final String GIT_SHA = "fdf8852369701d05af1fb1a68f96022b7129d1bb";
