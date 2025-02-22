@@ -1,18 +1,19 @@
 package com.team841.nemo.shooter;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team841.nemo.constants.SC;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
-  private final TalonFX intakeMotor = new TalonFX(SC.Shooter.intakeMotorID, "rio");
+  public final TalonFX intakeMotor = new TalonFX(SC.Shooter.intakeMotorID, "rio");
+
   private final CANrange frontRange = new CANrange(SC.Shooter.CANRangeFrontID);
   private final CANrange backRange = new CANrange(SC.Shooter.CANRangeBackID);
 
@@ -31,15 +32,16 @@ public class Shooter extends SubsystemBase {
     intakeMotor.set(setpoint);
   }
 
-  public boolean clear(){
+  public boolean clear() {
     return backRange.getDistance().getValueAsDouble() > 0.1;
   }
 
-  public boolean in(){
-    return backRange.getDistance().getValueAsDouble() > 0.1 && frontRange.getDistance().getValueAsDouble() < 0.1;
+  public boolean in() {
+    return backRange.getDistance().getValueAsDouble() > 0.1
+        && frontRange.getDistance().getValueAsDouble() < 0.1;
   }
 
-  public boolean past(){
+  public boolean past() {
     return backRange.getDistance().getValueAsDouble() < 0.1;
   }
 
@@ -55,7 +57,7 @@ public class Shooter extends SubsystemBase {
     intakeMotor.set(-0.1);
   }
 
-  public void revIntake(){
+  public void revIntake() {
     intakeMotor.set(0.1);
   }
 

@@ -49,28 +49,45 @@ public class SC {
             .withMotionMagic(
                 new MotionMagicConfigs()
                     .withMotionMagicAcceleration(145)
-                    .withMotionMagicCruiseVelocity(160*2)
+                    .withMotionMagicCruiseVelocity(160 * 2)
                     .withMotionMagicJerk(130))
-                .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake))
-                .withAudio(new AudioConfigs().withAllowMusicDurDisable(true));
+            .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake))
+            .withAudio(new AudioConfigs().withAllowMusicDurDisable(true));
   }
 
-  public static class Hang{
-            public static final int left = 13;
-            public static final int right = 3;
+  public static class Hang {
+    public static final int left = 13;
+    public static final int right = 3;
 
-            public static final TalonFXConfiguration configs =
-                new TalonFXConfiguration()
-                    .withCurrentLimits(
-                        new CurrentLimitsConfigs()
-                            .withStatorCurrentLimit(60)
-                            .withStatorCurrentLimitEnable(true)
-                            .withSupplyCurrentLimitEnable(true))
-                    .withFeedback(
-                        new FeedbackConfigs()
-                            .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor))
-                        .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake))
-                        .withAudio(new AudioConfigs().withAllowMusicDurDisable(true));
-            
+    public static final TalonFXConfiguration configs =
+        new TalonFXConfiguration()
+            .withCurrentLimits(
+                new CurrentLimitsConfigs()
+                    .withStatorCurrentLimit(60)
+                    .withStatorCurrentLimitEnable(true)
+                    .withSupplyCurrentLimitEnable(true))
+            .withFeedback(
+                new FeedbackConfigs()
+                    .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor))
+            .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake))
+            .withAudio(new AudioConfigs().withAllowMusicDurDisable(true));
+  }
+
+  public static class Intake{
+
+    public static final int id = 17;
+
+    public static final TalonFXConfiguration configs =
+    new TalonFXConfiguration()
+        .withCurrentLimits(
+            new CurrentLimitsConfigs()
+                .withStatorCurrentLimit(10)
+                .withStatorCurrentLimitEnable(true)
+                .withSupplyCurrentLimitEnable(true))
+        .withFeedback(
+            new FeedbackConfigs()
+                .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor))
+        .withMotorOutput(new MotorOutputConfigs().withNeutralMode(NeutralModeValue.Brake))
+        .withAudio(new AudioConfigs().withAllowMusicDurDisable(true)); 
   }
 }

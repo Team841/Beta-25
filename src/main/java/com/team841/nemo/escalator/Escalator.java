@@ -38,9 +38,9 @@ public class Escalator extends SubsystemBase {
     SmartDashboard.putNumber("setpoint", control.Position);
     SmartDashboard.putNumber("canrange", this.CANRange.getDistance().getValueAsDouble());
 
-//    if (this.CANRange.getDistance().getValueAsDouble() < 0.11) {
-//      this.rightMotor.setPosition(0);
-//    }
+    //    if (this.CANRange.getDistance().getValueAsDouble() < 0.11) {
+    //      this.rightMotor.setPosition(0);
+    //    }
   }
 
   public void setPosition(double Position) {

@@ -11,11 +11,9 @@ import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.team841.nemo.constants.TunerConstants;
 import com.team841.nemo.drivetrain.Drivetrain;
-import com.team841.nemo.drivetrain.Snapping;
 import com.team841.nemo.escalator.Escalator;
-import com.team841.nemo.escalator.Move;
-import com.team841.nemo.shooter.Shooter;
 import com.team841.nemo.hang.Hang;
+import com.team841.nemo.shooter.Shooter;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -47,7 +45,7 @@ public class RobotContainer {
   public final Orchestra orchestra = new Orchestra();
 
   public RobotContainer() {
-    control = new Control(drivetrain, escalator, shooter);
+    control = new Control(drivetrain, escalator, shooter, hang);
     configureBindings();
 
     orchestra.addInstrument(this.escalator.leftMotor);
@@ -56,7 +54,7 @@ public class RobotContainer {
     orchestra.addInstrument(this.hang.leftMotor);
     orchestra.addInstrument(this.hang.rightMotor);
 
-    orchestra.loadMusic("output.chrp");
+    orchestra.loadMusic("redSun.chrp");
     orchestra.play();
   }
 
@@ -90,31 +88,49 @@ public class RobotContainer {
     // reset the field-centric heading on left bumper press
     joystick2.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-//    joystick.leftBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreLeftL3);
-//    joystick.leftBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreLeftL4);
-//    joystick.rightBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreRightL3);
-//    joystick.rightBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreRightL4);
-//    joystick.leftBumper().and(joystick.y()).whileTrue(control.snapScoreLeftL2);
-//    joystick.rightBumper().and(joystick.y()).whileTrue(control.snapScoreRightL2);
+    //    joystick.leftBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreLeftL3);
+    //    joystick.leftBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreLeftL4);
+    //    joystick.rightBumper().and(joystick.leftTrigger()).whileTrue(control.snapScoreRightL3);
+    //    joystick.rightBumper().and(joystick.rightTrigger()).whileTrue(control.snapScoreRightL4);
+    //    joystick.leftBumper().and(joystick.y()).whileTrue(control.snapScoreLeftL2);
+    //    joystick.rightBumper().and(joystick.y()).whileTrue(control.snapScoreRightL2);
 
-//    joystick.leftBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
-//    joystick.rightBumper().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+    //    joystick.leftBumper().onFalse(new InstantCommand(() ->
+    // this.escalator.setPosition(Escalator.Position.Home)));
+    //    joystick.rightBumper().onFalse(new InstantCommand(() ->
+    // this.escalator.setPosition(Escalator.Position.Home)));
 
     joystick.a().whileTrue(control.intake);
-    joystick.x().whileTrue(new InstantCommand(shooter::revIntake)).onFalse(new InstantCommand(shooter::stop));
+    joystick
+        .x()
+        .whileTrue(new InstantCommand(shooter::revIntake))
+        .onFalse(new InstantCommand(shooter::stop));
 
     joystick.b().and(joystick.leftTrigger()).whileTrue(control.noSnapAutoScoreL3);
     joystick.b().and(joystick.rightTrigger()).whileTrue(control.noSnapAutoScoreL4);
     joystick.b().and(joystick.y()).whileTrue(control.noSnapAutoScoreL2);
-    joystick.povUp().onTrue(new InstantCommand(escalator::goUp)).onFalse(new InstantCommand(escalator::stop));
-    joystick.povDown().onTrue(new InstantCommand(escalator::goDown)).onFalse(new InstantCommand(escalator::stop));
+    joystick
+        .povUp()
+        .onTrue(new InstantCommand(escalator::goUp))
+        .onFalse(new InstantCommand(escalator::stop));
+    joystick
+        .povDown()
+        .onTrue(new InstantCommand(escalator::goDown))
+        .onFalse(new InstantCommand(escalator::stop));
 
-    joystick.b().onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Home)));
+    joystick
+        .b()
+        .onFalse(new InstantCommand(() -> this.escalator.setPosition(Escalator.Position.Intake)));
 
-    joystick.a().whileTrue(new InstantCommand(() -> this.hang.setDutyCyle(0.12)));
-    joystick.x().whileTrue(new InstantCommand(() -> this.hang.setDutyCyle(-0.035)));
-    joystick.a().onFalse(new InstantCommand(() -> this.hang.stop()));
-    joystick.x().onFalse(new InstantCommand(() -> this.hang.stop()));
+    joystick2.leftBumper().whileTrue(control.hangRetract);
+    joystick2.leftTrigger().whileTrue(control.hangDeploy);
+    joystick2.leftBumper().onFalse(new InstantCommand(hang::stop));
+    joystick2.leftTrigger().onFalse(new InstantCommand(hang::stop));
+
+    joystick2.rightBumper().whileTrue(control.intakeUp);
+    joystick2.rightTrigger().whileTrue(control.intakeDown);
+    joystick2.rightBumper().onFalse(new InstantCommand(hang::stopIntake));
+    joystick2.rightTrigger().onFalse(new InstantCommand(hang::stopIntake));
 
     // l3: left trigger
     // l4: right trigger
