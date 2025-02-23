@@ -68,6 +68,10 @@ public class Escalator extends SubsystemBase {
         < 0.75;
   }
 
+  public void zero(){
+    this.rightMotor.setPosition(0);
+  }
+
   public enum Position {
     Intake(5.9),
     L1(15.25),

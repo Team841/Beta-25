@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -194,6 +195,12 @@ public class Drivetrain extends TunerSwerveDrivetrain implements Subsystem {
 
     this.controller.setTolerance(1);
   }
+
+//  public void disable(){
+//    for (int i = 0; i < 4; i++){
+//      this.getModules()[i].getDriveMotor().getConfigurator().
+//    }
+//  }
 
   /**
    * Returns a command that applies the specified control request to this swerve drivetrain.

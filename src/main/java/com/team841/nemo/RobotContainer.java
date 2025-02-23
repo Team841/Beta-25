@@ -132,6 +132,8 @@ public class RobotContainer {
     joystick2.rightBumper().onFalse(new InstantCommand(hang::stopIntake));
     joystick2.rightTrigger().onFalse(new InstantCommand(hang::stopIntake));
 
+    joystick2.x().onTrue(new InstantCommand(escalator::zero));
+
     // l3: left trigger
     // l4: right trigger
     // l2: y
